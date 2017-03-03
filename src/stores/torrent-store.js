@@ -305,7 +305,7 @@ class TorrentStore {
     const regexp = new RegExp(this.textFilter, 'i'); // TODO: Escape!
 
     return this.torrents.filter((torrent) => {
-      if (this.prefs.statusFilter && this.prefs.statusFilter !== torrent.status) return false;
+      if (this.prefs.statusFilter !== -1 && this.prefs.statusFilter !== torrent.status) return false;
       if (this.trackerFilter && !extractDomains(torrent).includes(this.trackerFilter)) return false;
       if (this.textFilter && !regexp.test(torrent.name)) return false;
 

@@ -1,5 +1,7 @@
+jest.mock('../prefs-store');
+
 import React from 'react';
-import lodash from 'lodash';
+import PrefsStore from '../prefs-store';
 import TorrentStore from '../torrent-store'
 import Torrent from '../torrent'
 
@@ -17,9 +19,10 @@ const mapStatus = arr => arr.map(({ status }) => status)
 
 describe('TorrentStore', () => {
   describe('filteredTorrents', () => {
-    let store
+    let store, prefsStore;
     beforeEach(() => {
-      store = new TorrentStore();
+      prefsStore = new PrefsStore();
+      store = new TorrentStore({}, prefsStore);
       store.torrents = [
         new Torrent({ status: Torrent.STATUS_STOPPED }),
         new Torrent({ status: Torrent.STATUS_CHECK_WAIT }),
@@ -41,7 +44,7 @@ describe('TorrentStore', () => {
     })
     describe('when showing downloading', () => {
       it('should only show downloading torrents', () => {
-        store.statusFilter = STATUS_DOWNLOAD;
+        prefsStore.statusFilter = STATUS_DOWNLOAD;
 
         expect(mapStatus(store.filteredTorrents)).toContain(STATUS_DOWNLOAD);
         expect(store.filteredTorrents.length).toBe(1);
@@ -49,7 +52,7 @@ describe('TorrentStore', () => {
     })
     describe('when showing seeding', () => {
       it('should only show seeding torrents', () => {
-        store.statusFilter = STATUS_SEED;
+        prefsStore.statusFilter = STATUS_SEED;
 
         expect(mapStatus(store.filteredTorrents)).toContain(STATUS_SEED);
         expect(store.filteredTorrents.length).toBe(1);
@@ -57,7 +60,7 @@ describe('TorrentStore', () => {
     })
     describe('when showing paused', () => {
       it('should only show paused torrents', () => {
-        store.statusFilter = STATUS_STOPPED;
+        prefsStore.statusFilter = STATUS_STOPPED;
 
         expect(store.filteredTorrents[0].status).toBe(STATUS_STOPPED);
         expect(store.filteredTorrents.length).toBe(1);
