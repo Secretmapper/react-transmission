@@ -10,7 +10,7 @@ export const PrefCookieKeys = {
 }
 
 export const FilterStates = [
-  {value: 0, label: 'All', persistKey: 'all'},
+  {value: -1, label: 'All', persistKey: 'all'},
   {value: 11, label: 'Active', persistKey: 'active'},
   {value: Torrent.STATUS_DOWNLOAD, label: 'Downloading', persistKey: 'downloading'},
   {value: Torrent.STATUS_SEED, label: 'Seeding', persistKey: 'seeding'},
